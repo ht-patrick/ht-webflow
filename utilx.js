@@ -1,3 +1,6 @@
-export function test(){
+function test(){
 	alert("anaheimz");
 }
+
+
+export { test };
