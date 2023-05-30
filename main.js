@@ -1,1 +1,1 @@
-import { add } from "./util.js";
+alert("zzazzzz");
