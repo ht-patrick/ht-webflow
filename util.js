@@ -1,1 +1,4 @@
-alert("anaheimz");
+
+function test(){
+	alert("anaheimz");
+}
