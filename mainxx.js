@@ -1,4 +1,4 @@
 import { test } from "./util.js";
 
 
-test();
+console.log(test());

@@ -1,6 +1,5 @@
 function test(){
-	alert("anaheimz");
-}
+	return "hi world";
 
 
-export { test };
+export default { test };
