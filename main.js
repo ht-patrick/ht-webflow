@@ -1,5 +1,6 @@
 $( document ).ready(function() {
     
+    alert("asdada");
     
     function in_production(){
       if (window.location.href.indexOf("content.hellotech.com") >= 0) 
