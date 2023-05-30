@@ -1,6 +1,6 @@
 $( document ).ready(function() {
     
-    alert("asdada");
+    alert("asdadazzzz");
     
     function in_production(){
       if (window.location.href.indexOf("content.hellotech.com") >= 0) 
