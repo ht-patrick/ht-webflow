@@ -1,8 +1,8 @@
 $( document ).ready(function() {
     
-
-    console.log("SUCCESS!");
     
+
+    //Check if current WF page is in Prod environment 
     function in_production(){
       if (window.location.href.indexOf("content.hellotech.com") >= 0) 
       { return true; }
