@@ -1,5 +1,7 @@
 $( document ).ready(function() {
     
+
+    console.log("SUCCESS!");
     
     function in_production(){
       if (window.location.href.indexOf("content.hellotech.com") >= 0) 
