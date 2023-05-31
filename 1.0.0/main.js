@@ -1,7 +1,7 @@
 $( document ).ready(function() {
     
 
-    console.log("update!");
+    console.log("reverted!");
     
     function in_production(){
       if (window.location.href.indexOf("content.hellotech.com") >= 0) 
