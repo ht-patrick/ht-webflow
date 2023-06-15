@@ -1,4 +1,115 @@
+
+// Accordion Settings 
+const accSettings = {
+  speed: 250, // Animation speed
+  oneOpen: true, // Close all other accordion items if true
+  offsetAnchor: false, // Activate scroll to top for active item
+  offsetFromTop: 180, // In pixels – Scroll to top at what distance
+  scrollTopDelay: 400, // In Milliseconds – Delay before scroll to top 
+  
+  classes: {
+    accordion: 'js-accordion',
+    header: 'js-accordion-header',
+    item: 'js-accordion-item',
+    body: 'js-accordion-body',
+    icon: 'js-accordion-icon',
+    active: 'active',
+  }
+};
+
+
+const prefix = accSettings.classes
+
+const accordion = (function(){
+  const accordionElem = $(`.${prefix.accordion}`)
+  const accordionHeader = accordionElem.find(`.${prefix.header}`)
+  const accordionItem = $(`.${prefix.item}`)
+  const accordionBody = $(`.${prefix.body}`)
+  const accordionIcon = $(`.${prefix.icon}`)
+  const activeClass = prefix.active
+    
+  return {
+    // pass configurable object literal
+    init: function(settings) {
+      accordionHeader.on('click', function() {
+        accordion.toggle($(this));
+        if(accSettings.offsetAnchor) {
+          setTimeout(() => { 
+            $('html').animate({scrollTop: $(this).offset().top-accSettings.offsetFromTop}, accSettings.speed);
+          }, accSettings.scrollTopDelay);
+        }
+      });
+      
+      $.extend(accSettings, settings); 
+      
+      // ensure only one accordion is active if oneOpen is true
+      if(settings.oneOpen && $(`.${prefix.item}.${activeClass}`).length > 1) {
+        $(`.${prefix.item}.${activeClass}:not(:first)`).removeClass(activeClass).find(`.${prefix.header} > .${prefix.icon}`).removeClass(activeClass);
+      }
+      // reveal the active accordion bodies
+      $(`.${prefix.item}.${activeClass}`).find(`> .${prefix.body}`).show();
+      
+    },
+    
+    toggle: function($this) {
+      if(accSettings.oneOpen && $this[0] != $this.closest(accordionElem).find(`> .${prefix.item}.${activeClass} > .${prefix.header}`)[0]) {
+        $this.closest(accordionElem).find(`> .${prefix.item}`).removeClass(activeClass).find(accordionBody).slideUp(accSettings.speed);
+        $this.closest(accordionElem).find(`> .${prefix.item}`).find(`> .${prefix.header} > .${prefix.icon}`).removeClass(activeClass);
+      }
+      
+      // show/hide the clicked accordion item
+      $this.closest(accordionItem).toggleClass(`${activeClass}`).find(`> .${prefix.header} > .${prefix.icon}`).toggleClass(activeClass);
+      $this.next().stop().slideToggle(accSettings.speed);
+    }
+  }
+})();
+
+
+
+
+
 $( document ).ready(function() {
+
+
+  accordion.init(accSettings);
+  
+  //Make the active accordion's title more prominent
+  function callout_active_accordion_title(){
+    $(".accordion__item").each(function(){
+      $(this).find(".accordion-header-text").replaceWith( "<h6 class='accordion-header-text'>"+$(this).find(".accordion-header-text").text()+"</h6>" );
+    });
+    $(".accordion__item.active .accordion-header-text").replaceWith( "<h4 class='accordion-header-text'>"+$(".accordion__item.active .accordion-header-text").text()+"</h4>" );
+    $(".accordion__item.active .accordion-header-text").css("opacity","1");
+  }
+  callout_active_accordion_title();
+  
+  
+  //Switch category image when selecting an accordion item
+  $(".accordion__item").click(function(){
+    $(".hh-category-perks-img .inner-img").css("display","none");
+    $(".hh-category-perks-img .inner-img[item='"+ $(this).attr("item") +"'").css("display","block");
+    
+    callout_active_accordion_title();
+  });
+  
+  
+  
+  //Auto insert image in Accordion body for mobile
+  $(".hh-category-perks-img .inner-img").each(function(){
+    var img_src = $(this).attr("src");
+   
+    $(".accordion__item[item='"+$(this).attr("item")+"'] .accordion-body").append("<div class='hh-category-perks-img-mobile'><img class='inner-img' src='"+img_src+"' /></div>");
+    
+  });
+
+
+
+
+
+
+
+
+  
     
     
 
@@ -152,7 +263,7 @@ $( document ).ready(function() {
       	return false;
     });
     
-     // Pass redirect URL and event name to parent page, on click
+     // Pass redirect URL and event name to parent page, on click (specifically for NextJS app)
     $("a[segmentTracking='onNextJS']").click(function(event){
       var url = $(this).attr("href");
       
